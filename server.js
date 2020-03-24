@@ -38,6 +38,16 @@ app.get('/info', (req, res) => {
     );
 });
 
+app.get('/api/persons/:id', (req, res) => {
+  const id = req.params.id * 1;
+  const person = persons.find(el => el.id === id);
+  if (person) {
+    res.status(200).json(person);
+  } else {
+    res.status(400).end();
+  }
+});
+
 const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`App listening on port: ${PORT}`);
