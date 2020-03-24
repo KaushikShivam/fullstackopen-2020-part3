@@ -1,5 +1,8 @@
 const express = require('express');
 const app = express();
+const uuid = require('uuid/v4');
+
+app.use(express.json());
 
 let persons = [
   {
@@ -52,6 +55,18 @@ app.delete('/api/persons/:id', (req, res) => {
   const id = req.params.id * 1;
   persons = persons.filter(person => person.id !== id);
   res.status(204).end();
+});
+
+app.post('/api/persons', (req, res) => {
+  const { name, number } = req.body;
+  const newPerson = {
+    name,
+    number,
+    id: uuid() // used uuid instead of Math.random for more robustness
+  };
+  persons = [...persons, newPerson];
+
+  res.status(201).json(newPerson);
 });
 
 const PORT = 3001;

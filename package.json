@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/KaushikShivam/fullstackopen-2020-part3#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "uuid": "^7.0.2"
   }
 }
