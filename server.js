@@ -1,8 +1,12 @@
 const express = require('express');
 const app = express();
 const uuid = require('uuid/v4');
+const morgan = require('morgan');
 
 app.use(express.json());
+
+// morgan
+app.use(morgan('tiny'));
 
 let persons = [
   {
