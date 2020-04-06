@@ -1,5 +1,6 @@
-const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
+/* eslint-disable no-undef */
+const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
 
 mongoose
   .connect(process.env.MONGO_URI, {
@@ -9,7 +10,7 @@ mongoose
     useCreateIndex: true,
   })
   .then(() => console.log('DB connected'))
-  .catch((err) => console.log('DB connection failed', err));
+  .catch((err) => console.log('DB connection failed', err))
 
 const personSchema = new mongoose.Schema({
   name: {
@@ -23,18 +24,18 @@ const personSchema = new mongoose.Schema({
     minlength: [8, 'User name must be atleast 8 characters long'],
     required: [true, 'A user must have a number'],
   },
-});
+})
 
-personSchema.plugin(uniqueValidator);
+personSchema.plugin(uniqueValidator)
 
 personSchema.set('toJSON', {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString();
-    delete returnedObject._id;
-    delete returnedObject.__v;
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
   },
-});
+})
 
-const Person = mongoose.model('Person', personSchema);
+const Person = mongoose.model('Person', personSchema)
 
-module.exports = Person;
+module.exports = Person
