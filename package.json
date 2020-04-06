@@ -23,6 +23,7 @@
   "homepage": "https://github.com/KaushikShivam/fullstackopen-2020-part3#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "mongoose": "^5.9.7",
     "morgan": "^1.10.0",
     "uuid": "^7.0.2"
   },
