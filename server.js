@@ -1,7 +1,11 @@
+require('dotenv').config();
+
 const express = require('express');
 const app = express();
 const uuid = require('uuid/v4');
 const morgan = require('morgan');
+
+const Person = require('./models/person');
 
 app.use(express.json());
 
@@ -37,10 +41,6 @@ let persons = [
   },
 ];
 
-app.get('/api/persons', (req, res) => {
-  res.status(200).json(persons);
-});
-
 app.get('/info', (req, res) => {
   res
     .status(200)
@@ -51,14 +51,16 @@ app.get('/info', (req, res) => {
     );
 });
 
-app.get('/api/persons/:id', (req, res) => {
-  const id = req.params.id * 1;
-  const person = persons.find((el) => el.id === id);
-  if (person) {
-    res.status(200).json(person);
-  } else {
-    res.status(404).end();
-  }
+app.get('/api/persons', (request, response) => {
+  Person.find({}).then((persons) => {
+    response.json(persons.map((person) => person.toJSON()));
+  });
+});
+
+app.get('/api/persons/:id', (request, response) => {
+  Person.findById(request.params.id).then((person) => {
+    response.json(person.toJSON());
+  });
 });
 
 app.delete('/api/persons/:id', (req, res) => {
@@ -94,7 +96,7 @@ app.post('/api/persons', (req, res) => {
   res.status(201).json(newPerson);
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`App listening on port: ${PORT}`);
 });
