@@ -13,7 +13,7 @@ morgan.token('body', function (req, res) {
   return JSON.stringify(req.body);
 });
 
-app.use(morgan(':method :url :status :res-time ms - :body'));
+app.use(morgan(':method :url :status :response-time ms - :body'));
 
 app.use(express.static('build'));
 
@@ -45,7 +45,7 @@ app.get('/api/persons/:id', (req, res, next) => {
     .catch((err) => next(err));
 });
 
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
   const { name, number } = req.body;
 
   if (!name || !number) {
@@ -62,6 +62,21 @@ app.post('/api/persons', (req, res) => {
       res.status(201).json(newPerson);
     })
     .catch((err) => next(err));
+});
+
+app.put('/api/persons/:id', (req, res, next) => {
+  const { name, number } = req.body;
+
+  const person = {
+    name,
+    number,
+  };
+
+  Person.findByIdAndUpdate(req.params.id, person, { new: true })
+    .then((updatedPerson) => {
+      res.json(updatedPerson.toJSON());
+    })
+    .catch((error) => next(error));
 });
 
 app.delete('/api/persons/:id', (req, res, next) => {
